@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Cities, One Moment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B2430;
+    --paper: #F6F2EA;
+    --card: #FFFFFF;
+    --amber: #C97A2E;
+    --teal: #3E6B6B;
+    --slate: #6B7686;
+    --line: #E1DACB;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 64px 24px 80px;
+  }
+
+  header {
+    margin-bottom: 48px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 14px;
+    max-width: 14ch;
+  }
+
+  header p {
+    color: var(--slate);
+    font-size: 1.05rem;
+    max-width: 42ch;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px;
+    margin-bottom: 40px;
+  }
+
+  .panel-label {
+    font-size: 0.85rem;
+    color: var(--slate);
+    margin-bottom: 16px;
+  }
+
+  .input-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: flex-end;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .field label {
+    font-size: 0.8rem;
+    color: var(--slate);
+  }
+
+  .field input, .field select {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .field input:focus, .field select:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+  }
+
+  .now-btn {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--teal);
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+
+  .now-btn:hover { background: #EFEAE0; }
+
+  .results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) {
+    .results { grid-template-columns: 1fr; }
+  }
+
+  .city {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--teal);
+    border-radius: 4px;
+    padding: 26px 22px;
+  }
+
+  .city.dubai { border-top-color: var(--amber); }
+
+  .city-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    margin: 0 0 2px;
+  }
+
+  .city-region {
+    font-size: 0.82rem;
+    color: var(--slate);
+    margin: 0 0 20px;
+  }
+
+  .time-big {
+    font-family: 'Fraunces', serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0 0 8px;
+  }
+
+  .date-line {
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--slate);
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .diff {
+    color: var(--teal);
+  }
+
+  .city.dubai .diff { color: var(--amber); }
+
+  footer {
+    margin-top: 48px;
+    font-size: 0.8rem;
+    color: var(--slate);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Three cities, one moment</h1>
+    <p>Set a date and time in any of the three places below, and see what the clock reads everywhere else — Alberta, Peterborough, and Dubai.</p>
+  </header>
+
+  <div class="panel">
+    <div class="panel-label">Start from</div>
+    <div class="input-row">
+      <div class="field">
+        <label for="src-date">Date</label>
+        <input type="date" id="src-date">
+      </div>
+      <div class="field">
+        <label for="src-time">Time</label>
+        <input type="time" id="src-time">
+      </div>
+      <div class="field">
+        <label for="src-zone">Location</label>
+        <select id="src-zone">
+          <option value="America/Edmonton">Alberta, Canada</option>
+          <option value="America/Toronto">Peterborough, Ontario</option>
+          <option value="Asia/Dubai">Dubai, UAE</option>
+        </select>
+      </div>
+      <button class="now-btn" id="now-btn">Use current moment</button>
+    </div>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <footer>Times account for daylight saving where it applies. Alberta and Peterborough sit in different Canadian time zones (Mountain and Eastern).</footer>
+</div>
+
+<script>
+  const zones = [
+    { key: "America/Edmonton", name: "Alberta", region: "Canada — Mountain Time", cls: "" },
+    { key: "America/Toronto", name: "Peterborough", region: "Ontario, Canada — Eastern Time", cls: "" },
+    { key: "Asia/Dubai", name: "Dubai", region: "United Arab Emirates", cls: "dubai" }
+  ];
+
+  const dateInput = document.getElementById('src-date');
+  const timeInput = document.getElementById('src-time');
+  const zoneSelect = document.getElementById('src-zone');
+  const resultsEl = document.getElementById('results');
+  const nowBtn = document.getElementById('now-btn');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function setToNow() {
+    const now = new Date();
+    dateInput.value = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+    timeInput.value = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    render();
+  }
+
+  // Get the UTC offset (in minutes) for a given timezone at a given UTC instant
+  function getOffsetMinutes(timeZone, date) {
+    const dtf = new Intl.DateTimeFormat('en-US', {
+      timeZone, hourCycle: 'h23',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    const parts = dtf.formatToParts(date).reduce((acc, p) => { acc[p.type] = p.value; return acc; }, {});
+    const asUTC = Date.UTC(
+      parseInt(parts.year), parseInt(parts.month) - 1, parseInt(parts.day),
+      parseInt(parts.hour), parseInt(parts.minute), parseInt(parts.second)
+    );
+    return (asUTC - date.getTime()) / 60000;
+  }
+
+  // Convert a wall-clock date/time string interpreted in sourceZone into a true UTC instant
+  function zonedTimeToUtc(y, mo, d, h, mi, sourceZone) {
+    let guess = new Date(Date.UTC(y, mo - 1, d, h, mi));
+    for (let i = 0; i < 2; i++) {
+      const offset = getOffsetMinutes(sourceZone, guess);
+      guess = new Date(Date.UTC(y, mo - 1, d, h, mi) - offset * 60000);
+    }
+    return guess;
+  }
+
+  function formatOffset(mins) {
+    const sign = mins >= 0 ? '+' : '−';
+    const abs = Math.abs(mins);
+    const h = Math.floor(abs / 60);
+    const m = abs % 60;
+    return `UTC${sign}${h}${m ? ':' + pad(m) : ''}`;
+  }
+
+  function render() {
+    if (!dateInput.value || !timeInput.value) return;
+    const [y, mo, d] = dateInput.value.split('-').map(Number);
+    const [h, mi] = timeInput.value.split(':').map(Number);
+    const sourceZone = zoneSelect.value;
+
+    const utcInstant = zonedTimeToUtc(y, mo, d, h, mi, sourceZone);
+    const sourceOffset = getOffsetMinutes(sourceZone, utcInstant);
+
+    resultsEl.innerHTML = '';
+    zones.forEach(z => {
+      const targetOffset = getOffsetMinutes(z.key, utcInstant);
+      const diff = targetOffset - sourceOffset;
+
+      const dateFmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: z.key, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+      const timeFmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: z.key, hour: 'numeric', minute: '2-digit', hour12: true
+      });
+
+      const diffLabel = diff === 0 ? 'same time' :
+        `${diff > 0 ? '+' : ''}${diff / 60}h vs ${zones.find(zz => zz.key === sourceZone).name}`;
+
+      const card = document.createElement('div');
+      card.className = `city ${z.cls}`;
+      card.innerHTML = `
+        <p class="city-name">${z.name}</p>
+        <p class="city-region">${z.region}</p>
+        <p class="time-big">${timeFmt.format(utcInstant)}</p>
+        <p class="date-line">${dateFmt.format(utcInstant)}</p>
+        <div class="meta">
+          <span>${formatOffset(targetOffset)}</span>
+          <span class="diff">${diffLabel}</span>
+        </div>
+      `;
+      resultsEl.appendChild(card);
+    });
+  }
+
+  dateInput.addEventListener('input', render);
+  timeInput.addEventListener('input', render);
+  zoneSelect.addEventListener('change', render);
+  nowBtn.addEventListener('click', setToNow);
+
+  setToNow();
+</script>
+</body>
+</html>
